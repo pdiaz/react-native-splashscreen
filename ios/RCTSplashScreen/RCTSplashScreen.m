@@ -20,8 +20,8 @@ RCT_EXPORT_MODULE(SplashScreen)
 
 + (void)show:(RCTRootView *)v {
     rootView = v;
-    rootView.loadingViewFadeDelay = 0.1;
-    rootView.loadingViewFadeDuration = 0.1;
+    rootView.loadingViewFadeDelay = 0.01;
+    rootView.loadingViewFadeDuration = 0.01;
     UIImageView *view = [[UIImageView alloc]initWithFrame:[UIScreen mainScreen].bounds];
     view.image = [UIImage imageNamed:@"splash"];
     
