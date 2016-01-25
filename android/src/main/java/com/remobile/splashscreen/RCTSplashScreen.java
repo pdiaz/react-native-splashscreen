@@ -106,7 +106,7 @@ public class RCTSplashScreen extends ReactContextBaseJavaModule {
                 splashImageView.setMinimumHeight(display.getHeight());
                 splashImageView.setMinimumWidth(display.getWidth());
                 splashImageView.setBackgroundColor(Color.BLACK);
-                splashImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                splashImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                 // Create and show the dialog
                 splashDialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
