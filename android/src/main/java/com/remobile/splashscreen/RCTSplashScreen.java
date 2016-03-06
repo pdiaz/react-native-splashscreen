@@ -48,7 +48,7 @@ public class RCTSplashScreen extends ReactContextBaseJavaModule {
             public void run() {
                 removeSplashScreen();
             }
-        }, 500);
+        }, 10);
     }
 
 
@@ -57,7 +57,7 @@ public class RCTSplashScreen extends ReactContextBaseJavaModule {
             public void run() {
                 if (splashDialog != null && splashDialog.isShowing()) {
                     AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
-                    fadeOut.setDuration(1000);
+                    fadeOut.setDuration(50);
                     View view = ((ViewGroup)splashDialog.getWindow().getDecorView()).getChildAt(0);
                     view.startAnimation(fadeOut);
                     fadeOut.setAnimationListener(new Animation.AnimationListener() {
@@ -106,7 +106,7 @@ public class RCTSplashScreen extends ReactContextBaseJavaModule {
                 splashImageView.setMinimumHeight(display.getHeight());
                 splashImageView.setMinimumWidth(display.getWidth());
                 splashImageView.setBackgroundColor(Color.BLACK);
-                splashImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                splashImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                 // Create and show the dialog
                 splashDialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
