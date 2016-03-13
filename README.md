@@ -3,14 +3,14 @@ A splashscreen for react-native, hide when application loaded
 
 ## Installation
 ```sh
-npm install @remobile/react-native-splashscreen --save
+npm install pdiaz/react-native-splashscreen --save
 ```
 ### Installation (iOS)
 * Drag RCTSplashScreen.xcodeproj to your project on Xcode.
 * Click on your main project file (the one that represents the .xcodeproj) select Build Phases and drag libRCTSplashScreen.a from the Products folder inside the RCTSplashScreen.xcodeproj.
 * Look for Header Search Paths and make sure it contains $(SRCROOT)/../../../react-native/React as recursive.
 
-* In your project, Look for Header Search Paths and make sure it contains $(SRCROOT)/../node_modules/@remobile/react-native-splashscreen/ios/RCTSplashScreen
+* In your project, Look for Header Search Paths and make sure it contains $(SRCROOT)/../node_modules/react-native-splashscreen/ios/RCTSplashScreen
 
 * delete your project's LaunchScreen.xib
 * Dray SplashScreenResource to your project [if you want change image, replace splash.png]
@@ -39,7 +39,7 @@ RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
 ```gradle
 ...
 include ':react-native-splashscreen'
-project(':react-native-splashscreen').projectDir = new File(rootProject.projectDir, '../node_modules/@remobile/react-native-splashscreen/android')
+project(':react-native-splashscreen').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-splashscreen/android')
 ```
 
 * In `android/app/build.gradle`
@@ -97,7 +97,7 @@ var {
     View,
     Text,
 } = React;
-var SplashScreen = require('@remobile/react-native-splashscreen');
+var SplashScreen = require('react-native-splashscreen');
 
 var KitchenSink = React.createClass({
     componentDidMount: function() {

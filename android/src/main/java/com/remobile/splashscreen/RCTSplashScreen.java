@@ -3,12 +3,15 @@ package com.remobile.splashscreen;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Handler;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -36,40 +39,39 @@ public class RCTSplashScreen extends ReactContextBaseJavaModule {
     public String getName() {
         return "SplashScreen";
     }
-
-    protected Activity getActivity() {
-        return activity;
-    }
-
+    
     @ReactMethod
     public void hide() {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                removeSplashScreen();
-            }
-        }, 10);
+        if (splashDialog != null) {
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    removeSplashScreen();
+                }
+            }, 500);
+        }
     }
 
-
     private void removeSplashScreen() {
-        getActivity().runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             public void run() {
                 if (splashDialog != null && splashDialog.isShowing()) {
                     AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
-                    fadeOut.setDuration(50);
-                    View view = ((ViewGroup)splashDialog.getWindow().getDecorView()).getChildAt(0);
+                    fadeOut.setDuration(400);
+                    View view = ((ViewGroup) splashDialog.getWindow().getDecorView()).getChildAt(0);
                     view.startAnimation(fadeOut);
                     fadeOut.setAnimationListener(new Animation.AnimationListener() {
                         @Override
                         public void onAnimationStart(Animation animation) {
                         }
+
                         @Override
                         public void onAnimationEnd(Animation animation) {
                             splashDialog.dismiss();
                             splashDialog = null;
                             splashImageView = null;
                         }
+
                         @Override
                         public void onAnimationRepeat(Animation animation) {
                         }
@@ -80,9 +82,10 @@ public class RCTSplashScreen extends ReactContextBaseJavaModule {
     }
 
     private int getSplashId() {
-        int drawableId = getActivity().getResources().getIdentifier("splash", "drawable", getActivity().getClass().getPackage().getName());
+        Resources res = activity.getResources();
+        int drawableId = res.getIdentifier("splash", "drawable", activity.getClass().getPackage().getName());
         if (drawableId == 0) {
-            drawableId = getActivity().getResources().getIdentifier("splash", "drawable", getActivity().getPackageName());
+            drawableId = res.getIdentifier("splash", "drawable", activity.getPackageName());
         }
         return drawableId;
     }
@@ -92,11 +95,11 @@ public class RCTSplashScreen extends ReactContextBaseJavaModule {
         if ((splashDialog != null && splashDialog.isShowing())||(drawableId == 0)) {
             return;
         }
-        getActivity().runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             public void run() {
                 // Get reference to display
-                Display display = getActivity().getWindowManager().getDefaultDisplay();
-                Context context = getActivity();
+                Context context = activity;
+                Display display = activity.getWindowManager().getDefaultDisplay();
 
                 // Use an ImageView to render the image because of its flexible scaling options.
                 splashImageView = new ImageView(context);
@@ -105,18 +108,28 @@ public class RCTSplashScreen extends ReactContextBaseJavaModule {
                 splashImageView.setLayoutParams(layoutParams);
                 splashImageView.setMinimumHeight(display.getHeight());
                 splashImageView.setMinimumWidth(display.getWidth());
-                splashImageView.setBackgroundColor(Color.BLACK);
+                splashImageView.setBackgroundColor(Color.TRANSPARENT);
                 splashImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
+                Window activityWindow = activity.getWindow();
                 // Create and show the dialog
                 splashDialog = new Dialog(context, android.R.style.Theme_Translucent_NoTitleBar);
+                Window splashWindow = splashDialog.getWindow();
+
                 // check to see if the splash screen should be full screen
-                if ((getActivity().getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN)
-                        == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
-                    splashDialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                            WindowManager.LayoutParams.FLAG_FULLSCREEN);
+                if ((activityWindow.getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN)
+                    == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
+                    splashWindow.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
                 }
+
+                if (Build.VERSION.SDK_INT >= 21) {
+                    splashWindow.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                    splashWindow.setStatusBarColor(activityWindow.getStatusBarColor());
+                }
+
                 splashDialog.setContentView(splashImageView);
+
                 splashDialog.setCancelable(false);
                 splashDialog.show();
             }
