@@ -18,12 +18,12 @@ static RCTRootView *rootView = nil;
 
 RCT_EXPORT_MODULE(SplashScreen)
 
-+ (void)show:(RCTRootView *)v {
++ (void)show:(RCTRootView *)v image:(UIImage*)image
+{
     rootView = v;
-    rootView.loadingViewFadeDelay = 0.01;
-    rootView.loadingViewFadeDuration = 0.01;
-    UIImageView *view = [[UIImageView alloc]initWithFrame:[UIScreen mainScreen].bounds];
-    view.image = [UIImage imageNamed:@"splash"];
+
+    UIImageView *view = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    view.image = image;
     
     [[NSNotificationCenter defaultCenter] removeObserver:rootView  name:RCTContentDidAppearNotification object:rootView];
     
@@ -31,21 +31,22 @@ RCT_EXPORT_MODULE(SplashScreen)
 }
 
 
-RCT_EXPORT_METHOD(hide) {
+RCT_EXPORT_METHOD(hide)
+{
     if (!rootView) {
         return;
     }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(rootView.loadingViewFadeDuration * NSEC_PER_SEC)),
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)),
                    dispatch_get_main_queue(),
                    ^{
-                       [UIView transitionWithView: rootView
-                                         duration:rootView.loadingViewFadeDelay
-                                          options:UIViewAnimationOptionTransitionCrossDissolve
-                                       animations:^{
-                                           rootView.loadingView.hidden = YES;
-                                       } completion:^(__unused BOOL finished) {
-                                           [rootView.loadingView removeFromSuperview];
-                                       }];
+                       [UIView animateWithDuration:0.4
+                                        animations:^{
+                                            UIView *loadingView = rootView.loadingView;
+                                            loadingView.alpha = 0;
+                                        }
+                                        completion:^(__unused BOOL finished) {
+                                            [rootView.loadingView removeFromSuperview];
+                                        }];
                    });
 }
 

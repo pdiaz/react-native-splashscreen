@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3245CDF11BFEE35C00EABF68 /* RCTSplashScreen.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3245CDF01BFEE35C00EABF68 /* RCTSplashScreen.h */; };
-		3245CDF31BFEE35C00EABF68 /* RCTSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 3245CDF21BFEE35C00EABF68 /* RCTSplashScreen.m */; };
+		DE38AAD31C95F05A00099C71 /* RCTSplashScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = 3245CDF21BFEE35C00EABF68 /* RCTSplashScreen.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -122,7 +122,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3245CDF31BFEE35C00EABF68 /* RCTSplashScreen.m in Sources */,
+				DE38AAD31C95F05A00099C71 /* RCTSplashScreen.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
